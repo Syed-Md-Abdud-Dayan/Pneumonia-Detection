@@ -134,8 +134,6 @@ A confusion matrix is also used to inspect correct and incorrect predictions.
 
 ## 4. Results and Visualizations
 
-The following figures are taken from the notebook and can be viewed directly in the repository.
-
 ### Class Distribution
 
 ![Class Distribution](Pneumonia_Detection_Images/class_distribution.png)
