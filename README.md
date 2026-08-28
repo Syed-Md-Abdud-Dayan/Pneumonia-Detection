@@ -7,7 +7,7 @@ The objective of this project is to develop a **Convolutional Neural Network (CN
 - **NORMAL**
 - **PNEUMONIA**
 
-The images are divided into training, validation, and test sets. The model learns visual patterns from the training images and is evaluated on unseen test images.
+The images are divided into training, validation, and test sets. The model learns visual patterns from the training images and is evaluated on unseen test images. The purpose is to assess how effectively the trained model can distinguish between normal chest X-rays and those associated with pneumonia.
 
 ---
 
@@ -136,22 +136,27 @@ A confusion matrix is also used to inspect correct and incorrect predictions.
 
 ### Class Distribution
 
+The class distribution graph shows the number of NORMAL and PNEUMONIA images in the dataset. It helps identify whether there is any imbalance between the two classes before training the model.
 ![Class Distribution](Pneumonia_Detection_Images/class_distribution.png)
 
 ### Training and Validation Accuracy
 
+The training and validation accuracy graph shows how the model's classification accuracy changes across epochs. It helps compare the model's performance on the training data with its ability to generalize to unseen validation data.
 ![Accuracy](Pneumonia_Detection_Images/accuracy.png)
 
 ### Training and Validation Loss
 
+The training and validation loss graph shows how the model's prediction error changes during training. It helps identify whether the model is learning effectively and whether signs of overfitting or underfitting are present.
 ![Loss](Pneumonia_Detection_Images/loss.png)
 
 ### Confusion Matrix
 
+The training and validation loss graph shows how the model's prediction error changes during training. It helps identify whether the model is learning effectively and whether signs of overfitting or underfitting are present.
 ![Confusion Matrix](Pneumonia_Detection_Images/confusion_matrix.png)
 
 ### ROC Curve
 
+The ROC curve illustrates the model's ability to distinguish between NORMAL and PNEUMONIA across different classification thresholds. The AUC (Area Under the Curve) provides an overall measure of the model's classification performance.
 ![ROC Curve](Pneumonia_Detection_Images/roc_curve.png)
 
 ---
@@ -161,6 +166,8 @@ A confusion matrix is also used to inspect correct and incorrect predictions.
 The model's performance is assessed using multiple evaluation metrics rather than accuracy alone.
 
 ### Test Set Evaluation
+
+The evaluation metrics summarize the model's overall performance using Accuracy, Precision, Recall, F1 Score, and ROC-AUC, providing a comprehensive assessment of the final model.
 
 | Metric | Result |
 |---|---:|
@@ -173,7 +180,7 @@ The model's performance is assessed using multiple evaluation metrics rather tha
 
 ### Classification Report
 
-The classification report provides class-wise performance using Precision, Recall, F1 Score, and Support.
+The classification report summarizes the model's performance for both NORMAL and PNEUMONIA classes using Precision, Recall, F1 Score, and Support. It provides a detailed class-wise evaluation of the model.
 
 ```text
               precision    recall  f1-score   support
@@ -185,9 +192,6 @@ The classification report provides class-wise performance using Precision, Recal
    macro avg     0.8767    0.8645    0.8698       624
 weighted avg     0.8792    0.8798    0.8788       624
 ```
-
-The **confusion matrix** shows the number of NORMAL and PNEUMONIA images that were correctly and incorrectly classified. The **ROC curve and AUC** provide an additional view of the model's classification ability across different decision thresholds.
-
 ---
 
 ## 6. Limitations
@@ -199,7 +203,22 @@ The **confusion matrix** shows the number of NORMAL and PNEUMONIA images that we
 
 ---
 
-## 7. Conclusion
+## 7. Possible Improvements
+
+The model can be further improved through the following approaches:
+
+- **Fine-tuning VGG16:** Unfreeze additional layers of the pretrained VGG16 network and train them with a small learning rate to adapt the learned features more closely to chest X-ray images.
+- **Hyperparameter tuning:** Experiment with different learning rates, batch sizes, dropout rates, and numbers of neurons in the dense layers.
+- **Alternative CNN architectures:** Compare VGG16 with architectures such as ResNet, EfficientNet, or MobileNet to determine whether a different architecture provides better performance.
+- **Improved data augmentation:** Experiment with additional medically appropriate image transformations to increase the diversity of the training data.
+- **Cross-validation:** Use cross-validation to obtain a more robust estimate of model performance.
+- **Larger and more diverse datasets:** Training on additional chest X-ray datasets from different sources could improve generalization.
+- **Threshold optimization:** Instead of using only the default 0.5 classification threshold, investigate different thresholds to find a suitable balance between Precision and Recall.
+- **Explainable AI:** Techniques such as Grad-CAM could be incorporated to visualize the regions of an X-ray that influence the model's prediction.
+
+---
+
+## 8. Conclusion
 
 A VGG16-based CNN was developed to classify pediatric chest X-ray images as NORMAL or PNEUMONIA. The workflow included EDA, image preprocessing, data augmentation, class-weight handling, transfer learning, model training, and comprehensive evaluation.
 
@@ -209,23 +228,34 @@ The final model results should be reported using the values generated by the fin
 
 ---
 
-## 8. Project Structure
+## 9. How to Run
+
+### 1. Open the Notebook
+
+Open `Pneumonia_Detection.ipynb` using **Google Colab**.
+
+### 2. Upload the Project Files
+
+Upload the project folder to your Google Drive. The dataset should be located inside the `Archive` folder with the following structure:
 
 ```text
-Pneumonia Detection/
-├── Pneumonia_Detection(2).ipynb
-├── README.md
-└── Pneumonia_Detection_Images/
-    ├── class_distribution.png
-    ├── accuracy.png
-    ├── loss.png
-    ├── confusion_matrix.png
-    └── roc_curve.png
+Archive/
+├── train/
+│   ├── NORMAL/
+│   └── PNEUMONIA/
+├── val/
+│   ├── NORMAL/
+│   └── PNEUMONIA/
+└── test/
+    ├── NORMAL/
+    └── PNEUMONIA/
 ```
-
+### 3. Run the Google Drive mounting cell in the notebook and allow Colab to access the required files.
+### 4. Run the notebook cells in order from top to bottom.
+### 5. After execution, the notebook will display the training graphs, classification report, confusion matrix, ROC curve, and final evaluation metrics.
 ---
 
-## 9. Tools and Technologies
+## 10. Tools and Technologies Used
 
 - Python
 - Google Colab
