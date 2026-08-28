@@ -1,6 +1,6 @@
 # Pneumonia Detection using CNN
 
-## 1. Problem Statement
+## 1. Project Objective
 
 The objective of this project is to develop a **Convolutional Neural Network (CNN) model** that classifies pediatric chest X-ray images into two categories:
 
@@ -166,18 +166,29 @@ The model's performance is assessed using multiple evaluation metrics rather tha
 
 | Metric | Result |
 |---|---:|
-| Loss | Enter final notebook result |
-| Accuracy | Enter final notebook result |
-| Precision | Enter final notebook result |
-| Recall | Enter final notebook result |
-| F1 Score | Enter final notebook result |
-| ROC-AUC | Enter final notebook result |
+| Loss | 0.2983 |
+| Accuracy | 0.879808    (87.98%) |
+| Precision | 0.886978    (88.70%) |
+| Recall | 0.925641    (92.56%) |
+| F1 Score | 0.905897    (90.59%) |
+| ROC-AUC | 0.946154    (94.62%0 |
 
-The **F1 Score** is included because it provides a balance between Precision and Recall. This is particularly useful when both false positives and false negatives need to be considered.
+### Classification Report
+
+The classification report provides class-wise performance using Precision, Recall, F1 Score, and Support.
+
+```text
+              precision    recall  f1-score   support
+
+      NORMAL     0.8664    0.8034    0.8337       234
+   PNEUMONIA     0.8870    0.9256    0.9059       390
+
+    accuracy                         0.8798       624
+   macro avg     0.8767    0.8645    0.8698       624
+weighted avg     0.8792    0.8798    0.8788       624
+```
 
 The **confusion matrix** shows the number of NORMAL and PNEUMONIA images that were correctly and incorrectly classified. The **ROC curve and AUC** provide an additional view of the model's classification ability across different decision thresholds.
-
-When writing the final findings, the values should be taken from the final successful notebook run so that the README exactly matches the submitted model results.
 
 ---
 
@@ -213,8 +224,6 @@ Pneumonia Detection/
     ├── confusion_matrix.png
     └── roc_curve.png
 ```
-
-The dataset itself does not need to be uploaded to the Git repository if it is too large; the notebook can continue to load it from Google Drive.
 
 ---
 
