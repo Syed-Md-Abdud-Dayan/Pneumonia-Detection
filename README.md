@@ -10,17 +10,18 @@ The primary objective of this project is to develop and evaluate a deep learning
 
 The project follows an end-to-end supervised deep-learning workflow:
 
-1. Load the chest X-ray dataset.
+1. Load the chest X-ray dataset from Google Drive.
 2. Inspect the dataset structure and class distribution.
-3. Perform exploratory data analysis.
-4. Preprocess the X-ray images.
-5. Apply data augmentation to the training images.
-6. Handle class imbalance using class weights.
-7. Use a pretrained CNN model as the feature extractor.
-8. Train the model using training and validation data.
-9. Monitor training and validation Accuracy, Loss, Precision, and Recall.
-10. Evaluate the best model on the independent test set.
-11. Analyze the results using a Classification Report, Confusion Matrix, and ROC Curve.
+3. Perform exploratory data analysis (EDA) using class counts and sample X-ray visualizations.
+4. Resize and preprocess the images for CNN input.
+5. Apply data augmentation to the training data.
+6. Address class imbalance using balanced class weights.
+7. Use VGG16 pretrained on ImageNet as the convolutional feature extractor.
+8. Add a custom classification head for binary classification.
+9. Train the model using training and validation data.
+10. Use Early Stopping, learning-rate reduction, and Model Checkpointing to retain the best model.
+11. Evaluate the best model on the independent test set.
+12. Report Accuracy, Precision, Recall, F1 Score, Sensitivity, Specificity and ROC-AUC, along with the confusion matrix and ROC curve.
 
 ---
 
@@ -46,8 +47,8 @@ Archive/
 The model performs binary classification:
 
 ```text
-NORMAL    → Normal chest X-ray
-PNEUMONIA → Chest X-ray associated with pneumonia
+NORMAL    → Normal chest X-ray (0)
+PNEUMONIA → Chest X-ray associated with pneumonia (1)
 ```
 
 ### 3.2 Exploratory Data Analysis
@@ -57,7 +58,7 @@ Exploratory Data Analysis was performed to understand the dataset before model t
 The analysis includes:
 
 - Dataset structure inspection.
-- Class distribution analysis.
+- Class distribution analysis NOEMAL and PNEUMONIA.
 - Visualization of NORMAL and PNEUMONIA images.
 
 The class distribution is important because an imbalance between classes can affect the model's learning and evaluation.
@@ -66,33 +67,49 @@ The class distribution is important because an imbalance between classes can aff
 
 The chest X-ray images are resized and preprocessed before being provided to the model.
 
-Data augmentation is applied to the training images to introduce variation and help the model generalize better. The validation and test images are processed separately without training-time augmentation.
+Data augmentation is applied to the training images to introduce variation and help the model generalize better. 
+The validation and test images are processed separately without training-time augmentation.
 
 ### 3.4 Class Imbalance
 
-Class weights are used during training to reduce the effect of imbalance between the NORMAL and PNEUMONIA classes. This helps the model give appropriate importance to both classes.
+Balanced class weights are calculated from the training labels using `compute_class_weight`. These weights are supplied during training so that the model does not simply favor the more frequent class.
 
 ### 3.5 CNN Model
 
-The project uses a pretrained CNN-based model with additional classification layers for binary image classification.
+The model uses **VGG16 with ImageNet pretrained weights** as the base network. The convolutional layers provide learned visual features, while a custom classification head performs the final binary classification.
 
 The overall workflow can be represented as:
 
 ```text
-Input Chest X-ray
-        ↓
-Pretrained CNN Feature Extractor
-        ↓
-Classification Layers
-        ↓
-Sigmoid Output
-        ↓
+Input X-ray
+    ↓
+VGG16 pretrained feature extractor
+    ↓
+Global Average Pooling
+    ↓
+Dropout
+    ↓
+Dense layer (128 neurons, ReLU)
+    ↓
+Dropout
+    ↓
+Dense layer (1 neuron, Sigmoid)
+    ↓
 NORMAL / PNEUMONIA
 ```
 
 ### 3.6 Model Training
 
 The model is trained using training data while its performance is monitored using validation data.
+The model is trained using the Adam optimizer and binary cross-entropy loss.
+
+The training process uses:
+
+- **Early Stopping** — stops training when validation performance stops improving and restores the best weights.
+- **ReduceLROnPlateau** — lowers the learning rate when validation loss stops improving.
+- **Model Checkpointing** — saves the best-performing model.
+
+This helps reduce unnecessary training and retains the model with the best validation performance.
 
 The training process tracks:
 
@@ -117,6 +134,8 @@ The final model is evaluated using several performance metrics:
 - **Recall** — measures how many actual PNEUMONIA cases are correctly identified.
 - **F1 Score** — provides a balanced measure of Precision and Recall.
 - **ROC-AUC** — measures the model's ability to distinguish between the two classes across different classification thresholds.
+- **Sensitivity** — measures how effectively the model identifies actual PNEUMONIA cases.
+- **Specificity** — measures how effectively the model identifies actual NORMAL cases.
 
 A Classification Report, Confusion Matrix, and ROC Curve are also used for detailed evaluation.
 
@@ -173,7 +192,7 @@ The model's performance is assessed using multiple evaluation metrics rather tha
 
 ### Test Set Evaluation
 
-The evaluation metrics summarize the model's overall performance using Accuracy, Precision, Recall, F1 Score, and ROC-AUC.
+The evaluation metrics summarize the model's overall performance using Accuracy, Precision, Recall, F1 Score, ROC-AUC, Sensitivity and Specificity.
 
 | Metric | Result |
 |---|---:|
@@ -194,12 +213,12 @@ The classification report summarizes the model's performance for both NORMAL and
 ```text
               precision    recall  f1-score   support
 
-      NORMAL     0.8664    0.8034    0.8337       234
-   PNEUMONIA     0.8870    0.9256    0.9059       390
+      NORMAL     0.8479    0.7863    0.8160       234
+   PNEUMONIA     0.8771    0.9154    0.8959       390
 
-    accuracy                         0.8798       624
-   macro avg     0.8767    0.8645    0.8698       624
-weighted avg     0.8792    0.8798    0.8788       624
+    accuracy                         0.8670       624
+   macro avg     0.8625    0.8509    0.8559       624
+weighted avg     0.8662    0.8670    0.8659       624
 ```
 
 The results show that the model performs well on both classes. The higher Recall for the PNEUMONIA class indicates that the model successfully identifies a large proportion of the actual PNEUMONIA images.
@@ -209,31 +228,32 @@ The results show that the model performs well on both classes. The higher Recall
 ## 6. Limitations
 
 - The model is trained and evaluated on the provided dataset and may not generalize perfectly to images from different hospitals, devices, or patient populations.
-- Model performance can be affected by variations in chest X-ray images.
+- Model performance can be affected by class imbalance and variations in chest X-ray images.
 - Performance may be influenced by class imbalance.
-- The model should not be considered a standalone clinical diagnostic system.
+- A pretrained VGG16 model provides useful learned features, but further tuning or comparison with other architectures could potentially improve performance.
+- The model is an academic project and should not be treated as a standalone clinical diagnostic system.
 
 ---
 
 ## 7. Possible Improvements
 
-- **Fine-tuning:** Unfreeze additional pretrained layers and train them with a small learning rate.
-- **Hyperparameter tuning:** Experiment with learning rates, batch sizes, dropout rates, and model parameters.
-- **Alternative architectures:** Compare the model with other CNN architectures.
-- **Improved data augmentation:** Experiment with additional medically appropriate image transformations.
-- **Cross-validation:** Use cross-validation for a more robust performance estimate.
-- **Larger datasets:** Train using more diverse chest X-ray datasets to improve generalization.
-- **Threshold optimization:** Investigate different classification thresholds to balance Precision and Recall.
-- **Explainable AI:** Use techniques such as Grad-CAM to visualize image regions that influence predictions.
+- **Fine-tuning VGG16:** Unfreeze additional layers of the pretrained VGG16 network and train them with a small learning rate to adapt the learned features more closely to chest X-ray images.
+- **Hyperparameter tuning:** Experiment with different learning rates, batch sizes, dropout rates, and numbers of neurons in the dense layers.
+- **Alternative CNN architectures:** Compare VGG16 with architectures such as ResNet, EfficientNet, or MobileNet to determine whether a different architecture provides better performance.
+- **Improved data augmentation:** Experiment with additional medically appropriate image transformations to increase the diversity of the training data.
+- **Cross-validation:** Use cross-validation to obtain a more robust estimate of model performance.
+- **Larger and more diverse datasets:** Training on additional chest X-ray datasets from different sources could improve generalization.
+- **Threshold optimization:** Instead of using only the default 0.5 classification threshold, investigate different thresholds to find a suitable balance between Precision and Recall.
+- **Explainable AI:** Techniques such as Grad-CAM could be incorporated to visualize the regions of an X-ray that influence the model's prediction.
 - **Specificity improvement: Focus on improving the model’s 78.63% specificity to better identify NORMAL cases while maintaining its high 91.54% sensitivity for detecting PNEUMONIA.**
 
 ---
 
 ## 8. Conclusion
 
-This project developed a CNN-based model to classify chest X-ray images as NORMAL or PNEUMONIA. The complete workflow included exploratory data analysis, image preprocessing, class-weight handling, model training, and comprehensive evaluation.
+This project developed a CNN-based model to classify chest X-ray images as NORMAL or PNEUMONIA. The workflow included EDA, image preprocessing, data augmentation, class-weight handling, transfer learning, model training, and comprehensive evaluation.
 
-The final model achieved **87.98% Accuracy**, **88.70% Precision**, **92.56% Recall**, **90.59% F1 Score**, and **94.62% ROC-AUC**.
+Accuracy, Precision, Recall, F1 Score, ROC-AUC, Sensitivity, Sepecificity together provide a more complete assessment of the model than accuracy alone.
 
 The training and validation graphs, Classification Report, Confusion Matrix, and ROC Curve provide a comprehensive view of the model's performance.
 
@@ -266,7 +286,7 @@ Upload the dataset folder to google drive then, run the Google Drive mounting ce
 
 ### 4. Run the Notebook
 
-Run the notebook cells **in order from top to bottom**.
+Run the notebook cells in order from top to bottom.
 
 The notebook will perform:
 
