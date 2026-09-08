@@ -2,12 +2,7 @@
 
 ## 1. Project Objective
 
-The objective of this project is to develop a deep learning model that classifies chest X-ray images into two categories:
-
-- **NORMAL**
-- **PNEUMONIA**
-
-The project follows a complete deep-learning workflow including exploratory data analysis, image preprocessing, model training, prediction, and evaluation.
+The primary objective of this project is to develop and evaluate a deep learning-based image classification model capable of accurately distinguishing between **NORMAL** and **PNEUMONIA** cases from chest X-ray images. The project aims to build an end-to-end workflow involving exploratory data analysis, image preprocessing, data augmentation, model training, and performance evaluation using metrics such as accuracy, precision, recall, F1-score, ROC-AUC, sensitivity, and specificity. The ultimate goal is to assess the model’s ability to reliably identify pneumonia while minimizing incorrect classifications of normal X-rays.
 
 ---
 
@@ -131,45 +126,44 @@ A Classification Report, Confusion Matrix, and ROC Curve are also used for detai
 
 ### Class Distribution
 
+The class distribution graph shows the number of NORMAL and PNEUMONIA images in the dataset. It helps identify whether there is any imbalance between the two classes before training the model.
 ![Class Distribution](Pneumonia_Detection_Images/class_distribution.png)
 
-The **class distribution graph** shows the number of NORMAL and PNEUMONIA images in the dataset. It helps identify whether there is any imbalance between the two classes before training the model.
 
 ### Training and Validation Accuracy
 
+The training and validation accuracy graph shows how the model's classification accuracy changes across epochs. It helps compare the model's performance on the training data with its ability to generalize to unseen validation data.
 ![Accuracy](Pneumonia_Detection_Images/accuracy.png)
 
-The **training and validation accuracy graph** shows how the model's classification accuracy changes across epochs. It helps compare the model's performance on the training data with its ability to generalize to unseen validation data.
 
 ### Training and Validation Loss
 
+The training and validation loss graph shows how the model's prediction error changes during training. It helps identify whether the model is learning effectively and whether signs of overfitting or underfitting are present.
 ![Loss](Pneumonia_Detection_Images/loss.png)
 
-The **training and validation loss graph** shows how the model's prediction error changes during training. It helps identify whether the model is learning effectively and whether signs of overfitting or underfitting are present.
 
 ### Training and Validation Precision
 
+The training and validation precision graph shows how accurately the model identifies PNEUMONIA cases among its positive predictions across different epochs. Comparing the training and validation curves helps evaluate how well precision generalizes beyond the training data.
 ![Precision](Pneumonia_Detection_Images/precision.png)
 
-The **training and validation precision graph** shows how accurately the model identifies PNEUMONIA cases among its positive predictions across different epochs. Comparing the training and validation curves helps evaluate how well precision generalizes beyond the training data.
 
 ### Training and Validation Recall
 
+The training and validation recall graph shows how effectively the model identifies actual PNEUMONIA cases across different epochs. Comparing both curves helps evaluate whether the model maintains its ability to detect positive cases on the validation data.
 ![Recall](Pneumonia_Detection_Images/recall.png)
 
-The **training and validation recall graph** shows how effectively the model identifies actual PNEUMONIA cases across different epochs. Comparing both curves helps evaluate whether the model maintains its ability to detect positive cases on the validation data.
 
 ### Confusion Matrix
 
+The confusion matrix shows the number of NORMAL and PNEUMONIA images that were correctly and incorrectly classified.
 ![Confusion Matrix](Pneumonia_Detection_Images/confusion_matrix.png)
 
-The **confusion matrix** shows the number of NORMAL and PNEUMONIA images that were correctly and incorrectly classified.
 
 ### ROC Curve
 
+The ROC curve and AUC provide an additional view of the model's classification ability across different decision thresholds.
 ![ROC Curve](Pneumonia_Detection_Images/roc_curve.png)
-
-The **ROC curve and AUC** provide an additional view of the model's classification ability across different decision thresholds.
 
 ---
 
@@ -184,15 +178,18 @@ The evaluation metrics summarize the model's overall performance using Accuracy,
 | Metric | Result |
 |---|---:|
 | Loss | 0.2983 |
-| Accuracy | 0.8798 (87.98%) |
-| Precision | 0.8870 (88.70%) |
-| Recall | 0.9256 (92.56%) |
-| F1 Score | 0.9059 (90.59%) |
-| ROC-AUC | 0.9462 (94.62%) |
+| Accuracy    | 0.866987 (86.70%) |
+| Precision   | 0.877150 (87.71%) |
+| Recall      | 0.915385 (91.54%) |
+| F1 Score    | 0.895859 (89.59%) |
+| ROC-AUC     | 0.932851 (93.29%) |
+| Sensitivity | 0.915385 (91.54%) |
+| Specificity | 0.786325 (78.63%) |
+
 
 ### Classification Report
 
-The **classification report** summarizes the model's performance for both NORMAL and PNEUMONIA classes using Precision, Recall, F1 Score, and Support.
+The classification report summarizes the model's performance for both NORMAL and PNEUMONIA classes using Precision, Recall, F1 Score, and Support.
 
 ```text
               precision    recall  f1-score   support
@@ -228,6 +225,7 @@ The results show that the model performs well on both classes. The higher Recall
 - **Larger datasets:** Train using more diverse chest X-ray datasets to improve generalization.
 - **Threshold optimization:** Investigate different classification thresholds to balance Precision and Recall.
 - **Explainable AI:** Use techniques such as Grad-CAM to visualize image regions that influence predictions.
+- **Specificity improvement: Focus on improving the model’s 78.63% specificity to better identify NORMAL cases while maintaining its high 91.54% sensitivity for detecting PNEUMONIA.**
 
 ---
 
@@ -245,7 +243,7 @@ The training and validation graphs, Classification Report, Confusion Matrix, and
 
 ### 1. Open the Notebook
 
-Open the notebook using **Google Colab** or Jupyter Notebook.
+Open the **Pneumonia_Detection.ipynb** notebook using Google Colab.
 
 ### 2. Prepare the Dataset
 
@@ -263,8 +261,10 @@ Archive/
     ├── NORMAL/
     └── PNEUMONIA/
 ```
+### 3. Upload the project folder to your Google Drive and run the first cell.
+Upload the dataset folder to google drive then, run the Google Drive mounting cell in the notebook and allow Colab to access the required files
 
-### 3. Run the Notebook
+### 4. Run the Notebook
 
 Run the notebook cells **in order from top to bottom**.
 
@@ -284,7 +284,7 @@ The notebook will perform:
 - ROC Curve
 - Final evaluation metrics
 
-### 4. View the Results
+### 5. View the Results
 
 After execution, the notebook will display all visualizations, evaluation metrics, the Classification Report, Confusion Matrix, and ROC Curve.
 
@@ -293,8 +293,9 @@ After execution, the notebook will display all visualizations, evaluation metric
 ## 10. Tools and Technologies Used
 
 - Python
-- Google Colab / Jupyter Notebook
+- Google Colab
 - TensorFlow / Keras
+- VGG16
 - NumPy
 - Pandas
 - Matplotlib
