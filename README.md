@@ -281,8 +281,8 @@ Archive/
     ├── NORMAL/
     └── PNEUMONIA/
 ```
-### 3. Upload the project folder to your Google Drive and run the first cell.
-Upload the dataset folder to google drive then, run the Google Drive mounting cell in the notebook and allow Colab to access the required files
+### 3. Upload the dataset folder to your Google Drive and run the first cell.
+Upload the dataset folder to google drive then, run the Google Drive mounting cell in the notebook and allow Colab to access the required files.
 
 ### 4. Run the Notebook
 
