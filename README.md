@@ -225,7 +225,22 @@ The results show that the model performs well on both classes. The higher Recall
 
 ---
 
-## 6. Limitations
+## 6. Key Findings
+- The model achieved an overall Accuracy of 86.70%, demonstrating strong performance in classifying chest X-ray images.
+- The model obtained a Precision of 87.71%, indicating that most images predicted as PNEUMONIA were correctly classified.
+- The Recall and Sensitivity of 91.54% show that the model successfully identified a large proportion of actual PNEUMONIA cases.
+- The model achieved a strong F1 Score of 89.59%, indicating a good balance between Precision and Recall.
+- The ROC-AUC score of 93.29% demonstrates a strong ability to distinguish between NORMAL and PNEUMONIA images.
+- The model achieved a Specificity of 78.63%, meaning it correctly identified approximately 79% of actual NORMAL cases.
+- The model performed better at detecting PNEUMONIA than identifying NORMAL images, as shown by its higher Sensitivity compared with Specificity.
+- The confusion matrix shows that 357 out of 390 PNEUMONIA images and 184 out of 234 NORMAL images were correctly classified.
+- The model produced 50 false positives (NORMAL images classified as PNEUMONIA) and 33 false negatives (PNEUMONIA images classified as NORMAL).
+- During training, the best validation performance was reached early, and Early Stopping restored the model from the best epoch, helping prevent unnecessary training after validation performance stopped improving.
+- Overall, the results indicate that the model is particularly effective at detecting PNEUMONIA, although improving specificity could help reduce the number of NORMAL images incorrectly classified as PNEUMONIA.
+
+---
+
+## 7. Limitations
 
 - The model is trained and evaluated on the provided dataset and may not generalize perfectly to images from different hospitals, devices, or patient populations.
 - Model performance can be affected by class imbalance and variations in chest X-ray images.
@@ -235,7 +250,7 @@ The results show that the model performs well on both classes. The higher Recall
 
 ---
 
-## 7. Possible Improvements
+## 8. Possible Improvements
 
 - **Fine-tuning VGG16:** Unfreeze additional layers of the pretrained VGG16 network and train them with a small learning rate to adapt the learned features more closely to chest X-ray images.
 - **Hyperparameter tuning:** Experiment with different learning rates, batch sizes, dropout rates, and numbers of neurons in the dense layers.
@@ -249,7 +264,7 @@ The results show that the model performs well on both classes. The higher Recall
 
 ---
 
-## 8. Conclusion
+## 9. Conclusion
 
 This project developed a CNN-based model to classify chest X-ray images as NORMAL or PNEUMONIA. The workflow included EDA, image preprocessing, data augmentation, class-weight handling, transfer learning, model training, and comprehensive evaluation.
 
@@ -259,13 +274,13 @@ The training and validation graphs, Classification Report, Confusion Matrix, and
 
 ---
 
-## 9. How to Run
+## 10. How to Run
 
-### 1. Open the Notebook
+### 1) Open the Notebook
 
 Open the **Pneumonia_Detection.ipynb** notebook using Google Colab.
 
-### 2. Prepare the Dataset
+### 2) Prepare the Dataset
 
 Ensure that the chest X-ray dataset follows the required directory structure:
 
@@ -281,10 +296,10 @@ Archive/
     ├── NORMAL/
     └── PNEUMONIA/
 ```
-### 3. Upload the dataset folder to your Google Drive and run the first cell.
+### 3) Upload the dataset folder to your Google Drive and run the first cell.
 Upload the dataset folder to google drive then, run the Google Drive mounting cell in the notebook and allow Colab to access the required files.
 
-### 4. Run the Notebook
+### 4) Run the Notebook
 
 Run the notebook cells in order from top to bottom.
 
@@ -304,13 +319,13 @@ The notebook will perform:
 - ROC Curve
 - Final evaluation metrics
 
-### 5. View the Results
+### 5) View the Results
 
 After execution, the notebook will display all visualizations, evaluation metrics, the Classification Report, Confusion Matrix, and ROC Curve.
 
 ---
 
-## 10. Tools and Technologies Used
+## 11. Tools and Technologies Used
 
 - Python
 - Google Colab
